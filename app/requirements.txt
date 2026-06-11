@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+openai
+faiss-cpu
+python-dotenv
+tqdm
+numpy
+scikit-learn
+pydantic
+requests
+ollama
+sentence-transformers
+torch
+langchain
+langchain-text-splitters
+redis
+chromadb
