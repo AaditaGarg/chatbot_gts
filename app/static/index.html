@@ -3,35 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Support Chatbot</title>
+    <title>GTS Support Chatbot</title>
     <link rel="stylesheet" href="/static/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <h2>Support Chat</h2>
-            <button id="clear-btn" title="Clear Conversation">
-                <i class="fas fa-trash-alt"></i>
-            </button>
-        </div>
-        <div class="chat-box" id="chat-box">
-            <!-- Chat messages will be appended here -->
-            <div class="message bot-message">
-                <div class="avatar">
-                    <i class="fas fa-robot"></i>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1><i class="fas fa-headset"></i> GTS Support</h1>
+                <button id="sidebar-toggle" class="icon-btn" title="Toggle sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="user-panel">
+                <div class="user-avatar"><i class="fas fa-user"></i></div>
+                <div class="user-info">
+                    <span class="user-name" id="user-name">Guest</span>
+                    <span class="user-id" id="user-id-display" title="Your unique user ID">Loading...</span>
                 </div>
-                <div class="text">
-                    Hello! I'm your friendly support bot. How can I help you today?
+                <button id="new-user-btn" class="icon-btn small" title="New user profile">
+                    <i class="fas fa-user-plus"></i>
+                </button>
+            </div>
+
+            <button id="new-chat-btn" class="new-chat-btn">
+                <i class="fas fa-plus"></i> New Conversation
+            </button>
+
+            <div class="session-list" id="session-list">
+                <p class="empty-state">No conversations yet</p>
+            </div>
+
+            <div class="sidebar-footer">
+                <span id="status-indicator" class="status-dot offline"></span>
+                <span id="status-text">Connecting...</span>
+            </div>
+        </aside>
+
+        <main class="chat-main">
+            <header class="chat-header">
+                <div class="header-left">
+                    <button id="mobile-menu-btn" class="icon-btn mobile-only">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 id="chat-title">Support Chat</h2>
+                </div>
+                <div class="header-actions">
+                    <button id="clear-btn" class="header-btn" title="Clear conversation">
+                        <i class="fas fa-trash-alt"></i> Clear
+                    </button>
+                </div>
+            </header>
+
+            <div class="chat-box" id="chat-box" role="log" aria-live="polite">
+                <div class="message bot-message welcome-message">
+                    <div class="avatar"><i class="fas fa-robot"></i></div>
+                    <div class="text">
+                        <strong>Welcome to GTS Support!</strong><br>
+                        I can help with accounts, billing, features, and technical issues. Ask me anything!
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="chat-input">
-            <input type="text" id="question" placeholder="Type your message...">
-            <button id="send-btn">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
+
+            <div class="suggested-questions" id="suggested-questions">
+                <button class="suggestion-chip" data-q="How do I reset my password?">Reset password</button>
+                <button class="suggestion-chip" data-q="What is your refund policy?">Refund policy</button>
+                <button class="suggestion-chip" data-q="What subscription plans do you offer?">Pricing plans</button>
+                <button class="suggestion-chip" data-q="How do I contact support?">Contact support</button>
+            </div>
+
+            <div class="chat-input">
+                <textarea id="question" placeholder="Ask a question..." rows="1" aria-label="Message input"></textarea>
+                <button id="send-btn" aria-label="Send message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </main>
     </div>
     <script src="/static/app.js"></script>
 </body>

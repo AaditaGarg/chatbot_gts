@@ -48,8 +48,13 @@ def data_ingest():
     all_splits = text_splitter.create_documents(documents)
     print(f"Created {len(all_splits)} text chunks.")
 
-    # 3. Get or Create ChromaDB Collection
-    print(f"Getting or creating ChromaDB collection: '{COLLECTION_NAME}'")
+    # 3. Get or Create ChromaDB Collection (reset on re-ingest)
+    print(f"Preparing ChromaDB collection: '{COLLECTION_NAME}'")
+    try:
+        client.delete_collection(name=COLLECTION_NAME)
+        print("Removed existing collection for fresh ingest.")
+    except Exception:
+        pass
     collection = client.get_or_create_collection(name=COLLECTION_NAME)
 
     # 4. Generate Embeddings and Store in ChromaDB

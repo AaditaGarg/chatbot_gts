@@ -1,7 +1,101 @@
+# GTS Customer Support Knowledge Base
+
+## Account & Authentication
+
 How do I reset my password?
 
-To reset your password, go to the login page and click "Forgot password". Enter your email and we'll send a link to reset your password.
+To reset your password, go to the login page and click "Forgot password". Enter your registered email address and we will send a secure password reset link valid for 24 hours. If you do not receive the email within 5 minutes, check your spam folder or contact support@example.com.
+
+How do I create an account?
+
+Visit https://app.example.com/signup and provide your name, email, and a strong password (minimum 8 characters with one uppercase letter and one number). You will receive a verification email to activate your account.
+
+How do I change my email address?
+
+Go to Settings > Account > Email. Enter your new email and confirm with your current password. A verification link will be sent to the new address. Your old email remains active until verification is complete.
+
+How do I delete my account?
+
+Go to Settings > Account > Delete Account. This permanently removes all your data within 30 days per our data retention policy. Active subscriptions must be cancelled first. Contact support@example.com for assistance.
+
+## Billing & Subscriptions
 
 What is your refund policy?
 
-We offer a 30-day money-back guarantee for all subscriptions. Contact support@example.com to request a refund.
+We offer a 30-day money-back guarantee for all new subscriptions. Contact support@example.com with your order ID to request a refund. Refunds are processed within 5-7 business days to your original payment method. Annual plans are eligible for a pro-rated refund within the first 30 days only.
+
+What subscription plans do you offer?
+
+GTS offers three plans:
+- Basic ($9/month): 1 user, 5GB storage, email support
+- Pro ($29/month): 5 users, 50GB storage, priority support, API access
+- Enterprise (custom pricing): unlimited users, dedicated support, SLA guarantee
+Visit https://example.com/pricing for full details.
+
+How do I upgrade or downgrade my plan?
+
+Go to Settings > Billing > Change Plan. Upgrades take effect immediately with pro-rated billing. Downgrades take effect at the end of your current billing cycle. No refunds are issued for downgrades.
+
+What payment methods do you accept?
+
+We accept Visa, Mastercard, American Express, PayPal, and bank transfer for Enterprise plans. All payments are processed securely via Stripe.
+
+How do I cancel my subscription?
+
+Go to Settings > Billing > Cancel Subscription. Your access continues until the end of the current billing period. You can reactivate anytime before the period ends without losing your data.
+
+## Product Features
+
+What is GTS?
+
+GTS (Global Tech Solutions) is a cloud-based project management and collaboration platform. It helps teams plan projects, track tasks, share files, and communicate in real time. GTS supports integrations with Slack, GitHub, Jira, and Google Workspace.
+
+How do I invite team members?
+
+Go to your workspace Settings > Members > Invite. Enter email addresses and select a role (Admin, Editor, or Viewer). Invited members receive an email with a join link valid for 7 days.
+
+What integrations are available?
+
+GTS integrates with: Slack (notifications), GitHub (issue sync), Jira (ticket sync), Google Drive (file storage), Microsoft Teams (notifications), and Zapier (custom workflows). Enable integrations in Settings > Integrations.
+
+How do I export my data?
+
+Go to Settings > Data > Export. Choose JSON or CSV format. Exports include projects, tasks, and comments. Large exports are emailed as a download link within 24 hours.
+
+Is there a mobile app?
+
+Yes. GTS is available on iOS (App Store) and Android (Google Play). The mobile app supports task management, notifications, and file viewing. Offline mode is available for Pro and Enterprise plans.
+
+## Technical Support
+
+How do I contact support?
+
+Email: support@example.com (response within 24 hours on Basic, 4 hours on Pro, 1 hour on Enterprise)
+Live chat: Available Mon-Fri 9am-6pm EST on Pro and Enterprise plans
+Phone: +1-800-555-0199 (Enterprise only)
+
+What are your system requirements?
+
+GTS is browser-based and works on Chrome 90+, Firefox 88+, Safari 14+, and Edge 90+. Minimum internet speed: 1 Mbps. Mobile apps require iOS 14+ or Android 10+.
+
+The app is running slowly. What should I do?
+
+Try these steps: 1) Clear your browser cache, 2) Disable browser extensions, 3) Check your internet connection, 4) Try a different browser. If issues persist, contact support@example.com with your browser version and a description of the problem.
+
+How do I report a bug?
+
+Go to Help > Report a Bug or email bugs@example.com. Include steps to reproduce, expected vs actual behavior, screenshots if possible, and your browser/OS version. Critical bugs are addressed within 48 hours.
+
+## Security & Privacy
+
+Is my data secure?
+
+Yes. GTS uses AES-256 encryption at rest and TLS 1.3 in transit. We are SOC 2 Type II certified and GDPR compliant. Data is stored in AWS data centers in the US and EU. Enterprise customers can choose their data region.
+
+Do you share my data with third parties?
+
+We do not sell your data. We share data only with essential service providers (AWS for hosting, Stripe for payments) under strict data processing agreements. See our Privacy Policy at https://example.com/privacy.
+
+How do I enable two-factor authentication (2FA)?
+
+Go to Settings > Security > Two-Factor Authentication. Scan the QR code with an authenticator app (Google Authenticator, Authy). Save your backup codes in a secure location. 2FA is required for all Admin accounts on Enterprise plans.
