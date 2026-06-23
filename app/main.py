@@ -353,7 +353,13 @@ async def chat(request: ChatRequest, db: Session = Depends(get_db), redis_conn=D
         except ValueError:
             raise HTTPException(status_code=400, detail="Invalid UUID format.")
 
+print("request.user_id =", request.user_id)
+print("request.session_id =", request.session_id)
+print("user_uuid =", user_uuid)
+print("session_uuid =", session_uuid)
+
         conversation = long_term.get_conversation(db, user_uuid, session_uuid)
+print("conversation =", conversation)
         if not conversation:
             raise HTTPException(status_code=404, detail="Session not found for this user.")
 
