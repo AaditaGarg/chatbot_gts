@@ -12,3 +12,7 @@ chromadb
 sqlalchemy
 psycopg2-binary
 tqdm
+python-multipart
+duckduckgo-search
+pypdf
+python-docx

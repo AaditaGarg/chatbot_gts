@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const sidebarToggle = document.getElementById('sidebar-toggle');
+    const fileUpload = document.getElementById('file-upload');
 
     let userId = localStorage.getItem('chat_user_id');
     let sessionId = localStorage.getItem('chat_session_id');
@@ -102,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearChatBox = (welcome = true) => {
         chatBox.innerHTML = '';
         if (welcome) {
-            appendMessage('bot', 'Hello! I\'m your GTS support assistant. How can I help you today?');
+            appendMessage('bot', 'Hello! How can I help you today?');
         }
     };
 
@@ -213,17 +214,18 @@ document.addEventListener('DOMContentLoaded', () => {
         appendMessage('user', question);
         questionInput.value = '';
         questionInput.style.height = 'auto';
-        const loadingEl = appendMessage('bot', '', { isLoading: true });
 
         await ensureUserAndSession();
 
+        const botEl = appendMessage('bot', '', { isLoading: true });
+        const textDiv = botEl.querySelector('.text');
+
         try {
-            const res = await api('/chat', {
+            const res = await fetch(`${API_BASE}/chat/stream`, {
                 method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user_id: userId, session_id: sessionId, question }),
             });
-
-            chatBox.removeChild(loadingEl);
 
             if (!res.ok) {
                 let detail = '';
@@ -231,21 +233,71 @@ document.addEventListener('DOMContentLoaded', () => {
                     const err = await res.json();
                     detail = err?.detail || err?.message || JSON.stringify(err);
                 } catch {
-                    try {
-                        detail = (await res.text()) || '';
-                    } catch {
-                        detail = '';
-                    }
+                    detail = `Error ${res.status}`;
                 }
-                throw new Error(detail || `Error ${res.status}`);
+                throw new Error(detail);
             }
 
-            const data = await res.json();
-            appendMessage('bot', data.answer, { sources: data.sources || [] });
+            textDiv.innerHTML = '';
+            textDiv.textContent = '';
+
+            const reader = res.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+            let fullAnswer = '';
+            let sources = [];
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop() || '';
+
+                for (const line of lines) {
+                    if (!line.startsWith('data: ')) continue;
+                    try {
+                        const payload = JSON.parse(line.slice(6));
+                        if (payload.token) {
+                            fullAnswer += payload.token;
+                            textDiv.textContent = fullAnswer;
+                            chatBox.scrollTop = chatBox.scrollHeight;
+                        }
+                        if (payload.done) {
+                            sources = payload.sources || [];
+                        }
+                        if (payload.error) {
+                            throw new Error(payload.error);
+                        }
+                    } catch (parseErr) {
+                        if (parseErr.message && parseErr.message !== 'Unexpected end of JSON input') {
+                            throw parseErr;
+                        }
+                    }
+                }
+            }
+
+            if (sources.length > 0) {
+                const sourcesBlock = document.createElement('div');
+                sourcesBlock.classList.add('sources-block');
+                sourcesBlock.innerHTML = '<div class="sources-label">Sources</div>';
+                sources.slice(0, 3).forEach((src) => {
+                    const item = document.createElement('div');
+                    item.classList.add('source-item');
+                    item.textContent = src;
+                    sourcesBlock.appendChild(item);
+                });
+                textDiv.appendChild(sourcesBlock);
+            }
+
             await loadSessions();
         } catch (error) {
-            if (chatBox.contains(loadingEl)) chatBox.removeChild(loadingEl);
-            appendMessage('bot', `Sorry, I couldn't get a response. ${error.message}`);
+            if (botEl.parentNode) {
+                textDiv.textContent = `Sorry, I couldn't get a response. ${error.message}`;
+            } else {
+                appendMessage('bot', `Sorry, I couldn't get a response. ${error.message}`);
+            }
         } finally {
             isSending = false;
             sendBtn.disabled = false;
@@ -336,6 +388,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     mobileMenuBtn?.addEventListener('click', () => sidebar.classList.toggle('open'));
     sidebarToggle?.addEventListener('click', () => sidebar.classList.toggle('open'));
+
+    fileUpload?.addEventListener('change', async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        await ensureUserAndSession();
+
+        const formData = new FormData();
+        formData.append('user_id', userId);
+        formData.append('session_id', sessionId);
+        formData.append('file', file);
+
+        appendMessage('bot', `Uploading "${file.name}"...`);
+        try {
+            const res = await fetch(`${API_BASE}/documents/upload`, { method: 'POST', body: formData });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.detail || 'Upload failed');
+            appendMessage('bot', data.message || `Indexed ${data.chunk_count} chunks from "${file.name}".`);
+        } catch (err) {
+            appendMessage('bot', `Upload failed: ${err.message}`);
+        }
+        fileUpload.value = '';
+    });
 
     const init = async () => {
         updateUserUI();
